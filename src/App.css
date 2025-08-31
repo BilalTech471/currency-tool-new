@@ -1,0 +1,35 @@
+.app {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  padding: 50px;
+}
+
+.converter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+input, select {
+  padding: 10px;
+  font-size: 16px;
+  width: 120px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.swap-btn {
+  font-size: 24px;
+}
