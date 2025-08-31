@@ -3,37 +3,49 @@ import "./App.css";
 
 const currencyOptions = ["USD", "EUR", "GBP", "PKR", "JPY", "CAD"];
 
-// Hardcoded example rates (USD as base)
-const rates = {
-  USD: 1,
-  EUR: 0.92,
-  GBP: 0.81,
-  PKR: 285,
-  JPY: 149,
-  CAD: 1.35
-};
-
 function App() {
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("PKR");
   const [amount, setAmount] = useState(1);
   const [convertedAmount, setConvertedAmount] = useState(0);
+  const [liveRates, setLiveRates] = useState({});
 
-  // Conversion function
-  const convert = () => {
+  // CurrencyFreaks API se rates fetch karne ka function
+  const fetchRates = async () => {
     try {
-      const rate = rates[toCurrency] / rates[fromCurrency];
-      setConvertedAmount((amount * rate).toFixed(2));
+      const apiKey = "65506dff0a814c2d96e49007ca2056cd";
+      const response = await fetch(
+        `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${apiKey}&symbols=${currencyOptions.join(',')}`
+      );
+      const data = await response.json();
+
+      if (data.rates) {
+        setLiveRates(data.rates);
+      } else {
+        console.error("API se rates nahi aaye:", data.error);
+      }
     } catch (error) {
-      console.error("Conversion failed:", error);
-      setConvertedAmount("Conversion failed");
+      console.error("Rates fetch karne mein error:", error);
     }
   };
 
-  // Live update whenever amount or currencies change
+  // Jab app load ho to rates fetch karo
+  useEffect(() => {
+    fetchRates();
+  }, []);
+
+  // Conversion function
+  const convert = () => {
+    if (liveRates[toCurrency] && liveRates[fromCurrency]) {
+      const rateFromBase = liveRates[toCurrency] / liveRates[fromCurrency];
+      setConvertedAmount((amount * rateFromBase).toFixed(2));
+    }
+  };
+
+  // Jab bhi amount ya currencies change hon, conversion karo
   useEffect(() => {
     convert();
-  }, [amount, fromCurrency, toCurrency]);
+  }, [amount, fromCurrency, toCurrency, liveRates]);
 
   // Swap currencies
   const swapCurrencies = () => {
