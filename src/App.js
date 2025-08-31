@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-const currencyOptions = ["USD", "EUR", "GBP", "PKR", "JPY", "CAD"];
+// Yahan aap apni pasand ki aur currencies add kar sakte hain
+const currencyOptions = [
+  "USD",
+  "EUR",
+  "GBP",
+  "PKR",
+  "JPY",
+  "CAD",
+  "AUD", // Australian Dollar
+  "NZD", // New Zealand Dollar
+  "SGD", // Singapore Dollar
+  "HKD", // Hong Kong Dollar
+  "INR", // Indian Rupee
+  "AED", // UAE Dirham
+];
 
 function App() {
   const [fromCurrency, setFromCurrency] = useState("USD");
